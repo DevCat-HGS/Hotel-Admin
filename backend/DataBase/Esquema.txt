@@ -1,0 +1,98 @@
+use hotel-reservation
+
+db.createCollection("users", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["name", "email", "password"],
+         properties: {
+            name: { bsonType: "string" },
+            email: { bsonType: "string" },
+            password: { bsonType: "string" },
+            role: { bsonType: "string" },
+            createdAt: { bsonType: "date" }
+         }
+      }
+   }
+})
+
+db.createCollection("hotels", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["name", "address"],
+         properties: {
+            name: { bsonType: "string" },
+            description: { bsonType: "string" },
+            address: {
+               bsonType: "object",
+               required: ["street", "city", "state", "country"],
+               properties: {
+                  street: { bsonType: "string" },
+                  city: { bsonType: "string" },
+                  state: { bsonType: "string" },
+                  country: { bsonType: "string" },
+                  zipCode: { bsonType: "string" }
+               }
+            },
+            amenities: { bsonType: "array", items: { bsonType: "string" } },
+            images: { bsonType: "array", items: { bsonType: "string" } }
+         }
+      }
+   }
+})
+
+db.createCollection("rooms", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["hotelId", "roomNumber", "type", "price"],
+         properties: {
+            hotelId: { bsonType: "objectId" },
+            roomNumber: { bsonType: "string" },
+            type: { bsonType: "string" },
+            price: { bsonType: "number" },
+            capacity: { bsonType: "number" },
+            amenities: { bsonType: "array", items: { bsonType: "string" } },
+            images: { bsonType: "array", items: { bsonType: "string" } },
+            status: { bsonType: "string" }
+         }
+      }
+   }
+})
+
+db.createCollection("reservations", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["userId", "roomId", "checkIn", "checkOut"],
+         properties: {
+            userId: { bsonType: "objectId" },
+            roomId: { bsonType: "objectId" },
+            checkIn: { bsonType: "date" },
+            checkOut: { bsonType: "date" },
+            status: { bsonType: "string" },
+            totalPrice: { bsonType: "number" },
+            guests: { bsonType: "number" },
+            specialRequests: { bsonType: "string" }
+         }
+      }
+   }
+})
+
+db.createCollection("reviews", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["userId", "hotelId", "rating", "comment"],
+         properties: {
+            userId: { bsonType: "objectId" },
+            hotelId: { bsonType: "objectId" },
+            reservationId: { bsonType: "objectId" },
+            rating: { bsonType: "number" },
+            comment: { bsonType: "string" },
+            createdAt: { bsonType: "date" }
+         }
+      }
+   }
+})
